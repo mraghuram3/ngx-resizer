@@ -1,11 +1,12 @@
-import { Directive, Input, Renderer2, ElementRef, Output, EventEmitter, ViewChild} from '@angular/core';
+import { Directive, Input, Renderer2, ElementRef, EventEmitter, ViewChild} from '@angular/core';
+
+import { NgxResizeService, ResizeEvent } from './ngx-resize.service';
 
 @Directive({
   selector: '[appNgxResize]'
 })
 export class NgxResizeDirective {
 
-  actualWidth = 10;
   minWidth = 10;
   backupWidth = 10;
   actualHeight = 10;
@@ -15,36 +16,93 @@ export class NgxResizeDirective {
   actualLeft = 0;
   backupLeft = 0;
 
+  resizeid= '';
 
-  constructor(private renderer: Renderer2, private el: ElementRef) { }
+  subscription: any;
 
+  constructor(private renderer: Renderer2, private el: ElementRef, private service: NgxResizeService) { }
 
-  @Output()
-  private resize: EventEmitter<boolean> = new EventEmitter<boolean>();
+  ngOnInit(){
+    this.subscription = this.service.events.subscribe((event: ResizeEvent) => {
+      console.log(event);
+      if(event.id === this.resizeid){
+        if(event.resize === 'left' && event.type === 'drags'){
+          this.setWidth(this.backupWidth + event.x);
+          this.setLeft(this.backupLeft - event.x);
+        }
+        if(event.resize === 'left' && event.type === 'drops'){
+          this.backupWidth += event.x;
+          this.backupLeft -= event.x;
+        }
+        if(event.resize === 'top' && event.type === 'drags'){
+          this.setHeight(this.backupHeight + event.y);
+          this.setTop(this.backupTop - event.y);
+        }
+        if(event.resize === 'top' && event.type === 'drops'){
+          this.backupHeight += event.y;
+          this.backupTop -= event.y;
+        }
+        if(event.resize === 'right' && event.type === 'drags'){
+          this.setWidth(this.backupWidth + event.x);
+        }
+        if(event.resize === 'right' && event.type === 'drops'){
+          this.backupWidth += event.x;
+        }
+        if(event.resize === 'bottom' && event.type === 'drags'){
+          this.setHeight(this.backupHeight + event.y);
+        }
+        if(event.resize === 'bottom' && event.type === 'drops'){
+          this.backupHeight += event.y;
+        }
+      }
+    });
+  }
+
+  @Input('resizeId')
+  set resizeId(resizeId: string) {
+    this.resizeid = resizeId;
+  }
 
   @Input('width')
   set width(width: number) {
-    this.actualWidth = width;
-    console.log(width);
-    this.renderer.setStyle(this.el.nativeElement, 'width', this.actualWidth + 'px');
+    this.backupWidth = width;
+    this.setWidth(this.backupWidth);
   }
 
   @Input('height')
   set height(height: number) {
     this.actualHeight = height;
-    console.log(height);
-    this.renderer.setStyle(this.el.nativeElement, 'height', this.actualHeight + 'px');
+    this.backupHeight = height;
+    this.setHeight(this.actualHeight);
   }
 
   @Input('top')
   set top(top: number) {
     this.actualTop = top;
-    this.renderer.setStyle(this.el.nativeElement, 'top', this.actualTop + 'px');
+    this.backupTop = top;
+    this.setTop(this.actualTop);
   }
 
   @Input('left')
   set left(left: number) {
     this.actualLeft = left;
-    this.renderer.setStyle(this.el.nativeElement, 'left', this.actualLeft + 'px');
+    this.backupLeft = left;
+    this.setLeft(this.actualLeft);
+  }
+
+  setWidth(width: number){
+    this.renderer.setStyle(this.el.nativeElement, 'width', width + 'px');
+  }
+
+  setHeight(height: number){
+    this.renderer.setStyle(this.el.nativeElement, 'height', height + 'px');
+  }
+
+  setTop(top: number){
+    this.renderer.setStyle(this.el.nativeElement, 'top', top + 'px');
+  }
+
+  setLeft(left: number){
+    this.renderer.setStyle(this.el.nativeElement, 'left', left + 'px');
   }
 }

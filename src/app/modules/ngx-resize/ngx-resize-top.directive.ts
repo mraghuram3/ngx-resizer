@@ -1,8 +1,10 @@
-import { Directive, HostListener, ElementRef, AfterViewInit, Renderer2, Output, EventEmitter } from '@angular/core';
+import { Directive, HostListener, ElementRef, AfterViewInit, Renderer2, Input, EventEmitter } from '@angular/core';
 
 import {Observable} from 'rxjs/Rx';
 
 import 'rxjs/add/observable/fromEvent';
+
+import { NgxResizeService, ResizeEvent } from './ngx-resize.service';
 
 @Directive({
   selector: '[appNgxResizeTop]'
@@ -11,27 +13,34 @@ export class NgxResizeTopDirective  implements AfterViewInit {
 
   startX: number;
   startY: number;
+  resizeid = '';
 
-  @Output()
-  drags: EventEmitter<number> = new EventEmitter<number>();
+  constructor(private el: ElementRef, private renderer: Renderer2, private service: NgxResizeService ) { }
 
-  @Output()
-  drops: EventEmitter<number> = new EventEmitter<number>();
-
-  constructor(private el: ElementRef, private renderer: Renderer2) { }
-
+  @Input('resizeId')
+  set resizeId(resizeId: string) {
+    this.resizeid = resizeId;
+  }
   ngAfterViewInit() {
 
     const observables = this.getObservables(this.el.nativeElement);
 
     observables.drags.forEach(event => {
-      // console.log('Mouse down', event);
-      this.drags.emit(event.y);
+      const obj = new ResizeEvent();
+      obj.id = this.resizeid;
+      obj.resize = 'top';
+      obj.type = 'drags';
+      obj.y = event.y;
+      this.service.resize(obj);
     });
 
     observables.drops.forEach(event => {
-      // console.log('Mouse move', event);
-      this.drops.emit(event.y);
+      const obj = new ResizeEvent();
+      obj.id = this.resizeid;
+      obj.resize = 'top';
+      obj.type = 'drops';
+      obj.y = event.y;
+      this.service.resize(obj);
     });
 
   }

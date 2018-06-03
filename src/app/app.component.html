@@ -1,8 +1,8 @@
 
-<div appNgxResize  class="resizeable" [width]="width" [height]="height" [left]="left" [top]="top">
+<div appNgxResize [resizeId]="'test1'"  class="resizeable" [width]="width" [height]="height" [left]="left" [top]="top">
   test
-  <div appNgxResizeRight class="resizehandlerRight" (drags)="changeInWidthDrag($event);" (drops)="changeInWidthDrop($event);"></div>
-  <div appNgxResizeLeft class="resizehandlerLeft" (drags)="changeInWidthLeftDrag($event);" (drops)="changeInWidthLeftDrop($event);"></div>
-  <div appNgxResizeTop class="resizehandlerTop" (drags)="changeInHeighthTopDrag($event);" (drops)="changeInHeightTopDrop($event);"></div>
-  <div appNgxResizeBottom class="resizehandlerBottom" (drags)="changeInHeighthDrag($event);" (drops)="changeInHeightDrop($event);"></div>
+  <div appNgxResizeRight [resizeId]="'test1'" class="resizehandlerRight" ></div>
+  <div appNgxResizeLeft [resizeId]="'test1'" class="resizehandlerLeft" ></div>
+  <div appNgxResizeTop [resizeId]="'test1'" class="resizehandlerTop" ></div>
+  <div appNgxResizeBottom [resizeId]="'test1'" class="resizehandlerBottom" ></div>
 </div>

@@ -12,7 +12,7 @@ import { NgxResizeModule } from './modules/ngx-resize/ngx-resize.module';
   ],
   imports: [
     BrowserModule,
-    NgxResizeModule
+    NgxResizeModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

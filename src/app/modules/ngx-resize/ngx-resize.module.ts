@@ -1,6 +1,7 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { NgxResizeService } from './ngx-resize.service';
 
 import { NgxResizeLeftDirective } from './ngx-resize-left.directive';
 import { NgxResizeRightDirective } from './ngx-resize-right.directive';
@@ -27,4 +28,11 @@ import { NgxResizeDirective } from './ngx-resize.directive';
     NgxResizeBottomDirective
   ]
 })
-export class NgxResizeModule { }
+export class NgxResizeModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: NgxResizeModule,
+      providers: [ NgxResizeService ]
+    };
+  }
+}
