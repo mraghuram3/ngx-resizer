@@ -1,11 +1,12 @@
-import { Directive, Input, Renderer2, ElementRef, EventEmitter, ViewChild} from '@angular/core';
+import { Directive, Input, Renderer2, ElementRef, EventEmitter,
+   ViewChild, AfterViewInit, OnInit} from '@angular/core';
 
 import { NgxResizeService, ResizeEvent } from './ngx-resize.service';
 
 @Directive({
   selector: '[appNgxResize]'
 })
-export class NgxResizeDirective {
+export class NgxResizeDirective implements OnInit, AfterViewInit {
 
   minWidth = 10;
   backupWidth = 10;
@@ -16,13 +17,13 @@ export class NgxResizeDirective {
   actualLeft = 0;
   backupLeft = 0;
 
-  resizeid= '';
+  resizeid = '';
 
   subscription: any;
 
   constructor(private renderer: Renderer2, private el: ElementRef, private service: NgxResizeService) { }
 
-  ngOnInit(){
+  ngOnInit() {
     this.subscription = this.service.events.subscribe((event: ResizeEvent) => {
       console.log(event);
       if(event.id === this.resizeid){
@@ -56,6 +57,10 @@ export class NgxResizeDirective {
         }
       }
     });
+  }
+
+  ngAfterViewInit() {
+    this.renderer.setStyle(this.el.nativeElement, 'position', 'relative');
   }
 
   @Input('resizeId')
