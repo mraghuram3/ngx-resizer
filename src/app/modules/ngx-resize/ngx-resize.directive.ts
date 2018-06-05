@@ -8,13 +8,11 @@ import { NgxResizeService, ResizeEvent } from './ngx-resize.service';
 })
 export class NgxResizeDirective implements OnInit, AfterViewInit {
 
-  minWidth = 10;
+  minWidth = 20;
   backupWidth = 10;
-  actualHeight = 10;
+  minHeight = 20;
   backupHeight = 10;
-  actualTop = 0;
   backupTop = 0;
-  actualLeft = 0;
   backupLeft = 0;
 
   resizeid = '';
@@ -25,34 +23,40 @@ export class NgxResizeDirective implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.subscription = this.service.events.subscribe((event: ResizeEvent) => {
-      console.log(event);
+
       if(event.id === this.resizeid){
-        if(event.resize === 'left' && event.type === 'drags'){
+        if(event.resize === 'left' && event.type === 'drags' && this.backupWidth + event.x >= this.minWidth){
           this.setWidth(this.backupWidth + event.x);
           this.setLeft(this.backupLeft - event.x);
         }
-        if(event.resize === 'left' && event.type === 'drops'){
+        if(event.resize === 'left' && event.type === 'drops'  && this.backupWidth + event.x >= this.minWidth){
           this.backupWidth += event.x;
           this.backupLeft -= event.x;
+        } else if (event.resize === 'left' && event.type === 'drops'  && this.backupWidth + event.x <= this.minWidth){
+          this.backupWidth = this.el.nativeElement.offsetWidth;
+          this.backupLeft = this.el.nativeElement.offsetLeft;
         }
-        if(event.resize === 'top' && event.type === 'drags'){
+        if(event.resize === 'top' && event.type === 'drags' && this.backupHeight + event.y >= this.minHeight){
           this.setHeight(this.backupHeight + event.y);
           this.setTop(this.backupTop - event.y);
         }
-        if(event.resize === 'top' && event.type === 'drops'){
+        if(event.resize === 'top' && event.type === 'drops' && this.backupHeight + event.y >= this.minHeight){
           this.backupHeight += event.y;
           this.backupTop -= event.y;
+        } else if (event.resize === 'top' && event.type === 'drops' && this.backupHeight + event.y <= this.minHeight){
+          this.backupHeight = this.el.nativeElement.offsetHeight;
+          this.backupTop = this.el.nativeElement.offsetTop;
         }
-        if(event.resize === 'right' && event.type === 'drags'){
+        if(event.resize === 'right' && event.type === 'drags' && this.backupWidth + event.x > this.minWidth){
           this.setWidth(this.backupWidth + event.x);
         }
-        if(event.resize === 'right' && event.type === 'drops'){
+        if(event.resize === 'right' && event.type === 'drops' && this.backupWidth + event.x > this.minWidth){
           this.backupWidth += event.x;
         }
-        if(event.resize === 'bottom' && event.type === 'drags'){
+        if(event.resize === 'bottom' && event.type === 'drags' && this.backupHeight + event.y > this.minHeight){
           this.setHeight(this.backupHeight + event.y);
         }
-        if(event.resize === 'bottom' && event.type === 'drops'){
+        if(event.resize === 'bottom' && event.type === 'drops' && this.backupHeight + event.y > this.minHeight){
           this.backupHeight += event.y;
         }
       }
@@ -61,6 +65,7 @@ export class NgxResizeDirective implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.renderer.setStyle(this.el.nativeElement, 'position', 'relative');
+    this.renderer.setStyle(this.el.nativeElement, 'padding', '5px');
   }
 
   @Input('resizeId')
@@ -76,23 +81,20 @@ export class NgxResizeDirective implements OnInit, AfterViewInit {
 
   @Input('height')
   set height(height: number) {
-    this.actualHeight = height;
     this.backupHeight = height;
-    this.setHeight(this.actualHeight);
+    this.setHeight(this.backupHeight);
   }
 
   @Input('top')
   set top(top: number) {
-    this.actualTop = top;
     this.backupTop = top;
-    this.setTop(this.actualTop);
+    this.setTop(this.backupTop);
   }
 
   @Input('left')
   set left(left: number) {
-    this.actualLeft = left;
     this.backupLeft = left;
-    this.setLeft(this.actualLeft);
+    this.setLeft(this.backupLeft);
   }
 
   setWidth(width: number){

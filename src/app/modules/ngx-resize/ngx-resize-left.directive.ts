@@ -25,10 +25,11 @@ export class NgxResizeLeftDirective implements AfterViewInit {
 
   ngAfterViewInit() {
 
-    this.renderer.setStyle(this.el.nativeElement, 'width', '2px');
+    this.renderer.setStyle(this.el.nativeElement, 'width', '5px');
     this.renderer.setStyle(this.el.nativeElement, 'height', '100%');
     this.renderer.setStyle(this.el.nativeElement, 'position', 'absolute');
     this.renderer.setStyle(this.el.nativeElement, 'left', '0px');
+    this.renderer.setStyle(this.el.nativeElement, 'top', '0px');
     this.renderer.setStyle(this.el.nativeElement, 'cursor', 'w-resize');
 
     const observables = this.getObservables(this.el.nativeElement);

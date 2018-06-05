@@ -24,9 +24,10 @@ export class NgxResizeTopDirective  implements AfterViewInit {
   ngAfterViewInit() {
 
     this.renderer.setStyle(this.el.nativeElement, 'width', '100%');
-    this.renderer.setStyle(this.el.nativeElement, 'height', '2px');
+    this.renderer.setStyle(this.el.nativeElement, 'height', '5px');
     this.renderer.setStyle(this.el.nativeElement, 'position', 'absolute');
     this.renderer.setStyle(this.el.nativeElement, 'top', '0px');
+    this.renderer.setStyle(this.el.nativeElement, 'left', '0px');
     this.renderer.setStyle(this.el.nativeElement, 'cursor', 'n-resize');
 
     const observables = this.getObservables(this.el.nativeElement);
