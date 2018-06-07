@@ -8,7 +8,7 @@ import { NgxResizeService, ResizeEvent } from './ngx-resize.service';
 
 
 @Directive({
-  selector: '[appNgxResizeLeft]'
+  selector: '[ngxResizeLeft]'
 })
 export class NgxResizeLeftDirective implements AfterViewInit {
 

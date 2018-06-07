@@ -7,7 +7,7 @@ import 'rxjs/add/observable/fromEvent';
 import { NgxResizeService, ResizeEvent } from './ngx-resize.service';
 
 @Directive({
-  selector: '[appNgxResizeTop]'
+  selector: '[ngxResizeTop]'
 })
 export class NgxResizeTopDirective  implements AfterViewInit {
 

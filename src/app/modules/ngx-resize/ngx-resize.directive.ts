@@ -4,7 +4,7 @@ import { Directive, Input, Renderer2, ElementRef, EventEmitter,
 import { NgxResizeService, ResizeEvent } from './ngx-resize.service';
 
 @Directive({
-  selector: '[appNgxResize]'
+  selector: '[ngxResize]'
 })
 export class NgxResizeDirective implements OnInit, AfterViewInit {
 
