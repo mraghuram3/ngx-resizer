@@ -1,27 +1,84 @@
-# NgxResizer
+# ngx-resizer
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.4.
+Angular Directive to make elements resizeable.
 
-## Development server
+Live Demo : https://mraghuram3.github.io/#/ngx-resizer
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Installation
 
-## Code scaffolding
+To install this library, run:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```bash
+$ npm install ngx-resizer --save
+```
 
-## Build
+## Usage
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+Import `NgxResizeModule` in the root module
 
-## Running unit tests
+```ts
+import { NgxResizeModule } from 'ngx-resizer';
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+@NgModule({
+  imports: [
+    // ...
+    NgxResizeModule.forRoot(),
+    ...
+  ]
+})
+```
 
-## Running end-to-end tests
+In your template
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+```html
+  <div ngxResize [resizeId]="'test1'"  class="resizeable" [width]="width" [height]="height" [left]="left" [top]="top">
+    test
+    <div ngxResizeRight [resizeId]="'test1'" ></div>
+    <div ngxResizeLeft [resizeId]="'test1'" ></div>
+    <div ngxResizeTop [resizeId]="'test1'" ></div>
+    <div ngxResizeBottom [resizeId]="'test1'" ></div>
+  </div>
+```
+- **ngxResize**
 
-## Further help
+    Add the directive to the div or other dom elemnts which is to be made into resizeable.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+- **ngxResizeRight**
+
+    To enable resizeable on right side of the element.
+
+- **ngxResizeLeft**
+
+    To enable resizeable on left side of the element.
+
+- **ngxResizeTop**
+
+    To enable resizeable on top side of the element.
+
+- **ngxResizeBottom**
+
+    To enable resizeable on bottom side of the element.
+
+- **[resizeId]**: string
+
+  Pass same id to the reiszeable elemnts and handels. 
+
+- **[width]**: number
+
+  To set the width of the element in pixels.
+
+- **[height]**: number
+
+  To set the height of the element in pixels. 
+
+- **[top]**: number
+
+  To set the top of the element in pixels.
+
+- **[left]**: number
+
+  To set the left of the element in pixels.
+
+## License
+
+MIT © [Raghu Ram M](mailto:mraghuram3@gmail.com)
